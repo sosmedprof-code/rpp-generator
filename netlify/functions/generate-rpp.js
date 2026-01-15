@@ -5,13 +5,13 @@ exports.handler = async (event) => {
     const data = JSON.parse(event.body || "{}");
 
     const doc = new PDFDocument({ size: "A4", margin: 40 });
-    const buffers = [];
+    const chunks = [];
 
-    doc.on("data", buffers.push.bind(buffers));
+    doc.on("data", (chunk) => chunks.push(chunk));
     doc.on("end", () => {});
 
     doc.fontSize(16).text("RPP PEMBELAJARAN", { align: "center" });
-    doc.moveDown(1.5);
+    doc.moveDown();
 
     doc.fontSize(11).text(`Sekolah: ${data.sekolah || "-"}`);
     doc.text(`Mata Pelajaran: ${data.mapel || "-"}`);
@@ -31,14 +31,14 @@ exports.handler = async (event) => {
 
     sections.forEach(([title, content]) => {
       doc.fontSize(12).text(title, { underline: true });
-      doc.moveDown(0.3);
+      doc.moveDown(0.2);
       doc.fontSize(10).text(content || "-", { align: "justify" });
       doc.moveDown();
     });
 
     doc.end();
 
-    const pdfBuffer = Buffer.concat(buffers);
+    const pdfBuffer = Buffer.concat(chunks);
 
     return {
       statusCode: 200,
@@ -50,10 +50,10 @@ exports.handler = async (event) => {
       isBase64Encoded: true
     };
 
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: err.message
+      body: error.message
     };
   }
 };
