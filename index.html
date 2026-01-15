@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>RPP Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Generator RPP</h1>
+
+  <form id="rppForm">
+    <input id="sekolah" placeholder="Nama Sekolah" required>
+    <input id="mapel" placeholder="Mata Pelajaran" required>
+    <input id="kelas" placeholder="Kelas / Semester" required>
+
+    <textarea id="kompetensi" placeholder="Kompetensi Dasar"></textarea>
+    <textarea id="indikator" placeholder="Indikator"></textarea>
+    <textarea id="tujuan" placeholder="Tujuan Pembelajaran"></textarea>
+    <textarea id="materi" placeholder="Materi"></textarea>
+    <textarea id="metode" placeholder="Metode"></textarea>
+    <textarea id="kegiatan" placeholder="Langkah Kegiatan"></textarea>
+    <textarea id="penilaian" placeholder="Penilaian"></textarea>
+    <textarea id="sumber" placeholder="Sumber Belajar"></textarea>
+
+    <button type="submit">Generate PDF</button>
+  </form>
+
+  <p id="status"></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
