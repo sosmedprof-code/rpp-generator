@@ -4,8 +4,8 @@ exports.handler = async (event) => {
   try {
     const data = JSON.parse(event.body);
 
-    const doc = new PDFDocument();
-    let buffers = [];
+    const doc = new PDFDocument({ margin: 40 });
+    const buffers = [];
 
     doc.on("data", buffers.push.bind(buffers));
     doc.on("end", () => {});
@@ -13,9 +13,9 @@ exports.handler = async (event) => {
     doc.fontSize(14).text("RPP PEMBELAJARAN", { align: "center" });
     doc.moveDown();
 
-    doc.fontSize(10).text(`Sekolah: ${data.sekolah}`);
-    doc.text(`Mata Pelajaran: ${data.mapel}`);
-    doc.text(`Kelas/Semester: ${data.kelas}`);
+    doc.fontSize(10).text(`Sekolah: ${data.sekolah || "-"}`);
+    doc.text(`Mata Pelajaran: ${data.mapel || "-"}`);
+    doc.text(`Kelas/Semester: ${data.kelas || "-"}`);
     doc.moveDown();
 
     const sections = [
@@ -48,22 +48,11 @@ exports.handler = async (event) => {
       body: pdfBuffer.toString("base64"),
       isBase64Encoded: true,
     };
-  } catch (err) {
-    return { statusCode: 500, body: "PDF Error" };
-  }
-};    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/plain",
-        "Content-Disposition": "attachment; filename=rpp.txt"
-      },
-      body: rppText
-    };
 
-  } catch (err) {
+  } catch (error) {
     return {
       statusCode: 500,
-      body: "Error generating RPP"
+      body: error.toString()
     };
   }
 };
